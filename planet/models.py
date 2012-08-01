@@ -348,4 +348,22 @@ class Enclosure(models.Model):
 
     def __unicode__(self):
         return u"%s [%s] (%s)" % (self.link, self.mime_type, self.post)
+    
+from django.contrib.auth.models import User
+class UserFeed(models.Model):
+    """
+    This is the intermediate model that holds the information of
+    which user allowed to see which feeds
+    """
+    feeds = models.ManyToManyField("planet.Feed")
+    user = models.ForeignKey(User)
+
+    date_created = models.DateField(_("Date created"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("User Feed Data")
+        verbose_name_plural = _("User Feed Data")
+
+    def __unicode__(self):
+        return u'%s' % self.user
 

@@ -72,3 +72,10 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ("title", )
 
 admin.site.register(Category, CategoryAdmin)
+
+from planet.models import UserFeed
+class UserFeedAdmin(admin.ModelAdmin):
+    list_display = ("user",)
+    list_filter = ("user",)
+
+admin.site.register(UserFeed, UserFeedAdmin)

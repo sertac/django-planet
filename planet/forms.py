@@ -17,4 +17,7 @@ class SearchForm(forms.Form):
     w = forms.ChoiceField(choices=SEARCH_CHOICES, label="")
     q = forms.CharField(max_length=100, label="")
 
-
+import datetime
+class DateFilterForm(forms.Form):
+    start_date=forms.DateField(initial=datetime.date.today)
+    end_date=forms.DateField(initial=datetime.date.today)
