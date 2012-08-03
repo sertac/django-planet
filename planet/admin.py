@@ -45,7 +45,7 @@ class EnclosureInline(admin.StackedInline):
 class PostAdmin(admin.ModelAdmin):
     list_display = ("title", "feed", "url")
     list_filter = ("feed", )
-    # filter_horizontal = ('tags',)
+    #filter_horizontal = ('tags',)
 
 admin.site.register(Post, PostAdmin, inlines=[EnclosureInline])
 
@@ -64,7 +64,8 @@ admin.site.register(Generator, GeneratorAdmin)
 
 class FeedLinkAdmin(admin.ModelAdmin):
     list_display = ("feed", "mime_type", "rel", "link")
-    list_filter = ("mime_type", "rel")
+    list_filter = ("mime_type","rel" )
+
 
 admin.site.register(FeedLink, FeedLinkAdmin)
 
@@ -73,8 +74,13 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 
+from django.forms import ModelForm
+from django import forms
+from planet.models import Feed
 from planet.models import UserFeed
+
 class UserFeedAdmin(admin.ModelAdmin):
+    filter_horizontal = ('feeds',)
     list_display = ("user",)
     list_filter = ("user",)
 
