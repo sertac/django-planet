@@ -9,32 +9,34 @@ from planet.models import Blog, Feed, Author, Post
 from planet.forms import SearchForm
 
 from tagging.models import Tag, TaggedItem
+
 from planet.models import UserFeed
 from planet.forms import DateFilterForm
 from django.contrib.auth.models import User
 
-def index(request):
-    if not request.user.is_authenticated():
-        user=User.objects.get(id=1)
-    else:
-        user=request.user
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
-    user_feeds=UserFeed.objects.get(user=user).feeds.values('guid')
+@login_required
+def index(request):
+    try:
+        user_feeds=UserFeed.objects.get(user=request.user).feeds.values('id')
+    except ObjectDoesNotExist:
+        user_feeds=[]
 
     if request.method == 'POST':
-        form=DateFilterForm(request.POST)
+        form=DateFilterForm(request.user,request.POST)
         if form.is_valid():
             start_date = form.cleaned_data["start_date"]
             end_date = form.cleaned_data["end_date"]
-            posts = Post.site_objects.filter(feed__guid__in=user_feeds,date_modified__gt=start_date,date_modified__lt=end_date).order_by("-date_modified")
+            selected_feeds = form.cleaned_data["feeds"]
+            posts = Post.site_objects.filter(feed__in=selected_feeds,date_modified__gte=start_date,date_modified__lte=end_date).order_by("-date_modified")
     else:
-        form=DateFilterForm()
-        posts=Post.objects.filter(feed__guid__in=user_feeds).order_by("-date_modified")
+        form=DateFilterForm(request.user)
+        posts=Post.objects.filter(feed__id__in=user_feeds).order_by("-date_modified")
 
-
-    return render_to_response("planet/posts/list.html", {"posts": posts, "form": form},    
+    return render_to_response("planet/posts/list.html", {"posts": posts, "form": form},
                 context_instance=RequestContext(request))
-
 
 def blogs_list(request):
     blogs_list = Blog.site_objects.all()
@@ -102,26 +104,7 @@ def author_detail(request, author_id, tag=None):
 
 
 def posts_list(request):
-    if not request.user.is_authenticated():
-        user=User.objects.get(id=1)
-    else:
-        user=request.user
-
-    user_feeds=UserFeed.objects.get(user=user).feeds.values('guid')
-
-    if request.method == 'POST':
-        form=DateFilterForm(request.POST)
-        if form.is_valid():
-            start_date = form.cleaned_data["start_date"]
-            end_date = form.cleaned_data["end_date"]
-            posts = Post.site_objects.filter(feed__guid__in=user_feeds,date_modified__gt=start_date,date_modified__lt=end_date).order_by("-date_modified")
-    else:
-        form=DateFilterForm()
-        posts=Post.objects.filter(feed__guid__in=user_feeds).order_by("-date_modified")
-
-
-    return render_to_response("planet/posts/list.html", {"posts": posts, "form": form},    
-                context_instance=RequestContext(request))
+    return index(request)
 
 
 def post_detail(request, post_id):
