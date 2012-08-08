@@ -6,7 +6,6 @@ from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 
-
 SEARCH_CHOICES = (
     ("posts", _("Posts")),
     ("tags", _("Tags")),
@@ -21,12 +20,12 @@ class SearchForm(forms.Form):
     q = forms.CharField(max_length=100, label="")
 
 import datetime
-from planet.models import UserFeed,Feed
+from planet.models import UserFeed
 
 class DateFilterForm(forms.Form):
     feeds=forms.ChoiceField(required=False)
-    start_date=forms.DateField(initial=datetime.date.today)
-    end_date=forms.DateField(initial=datetime.date.today)
+    start_date=forms.DateField()
+    end_date=forms.DateField()
 
     def __init__(self,user, *args, **kwargs):
         super(DateFilterForm, self).__init__(*args, **kwargs)

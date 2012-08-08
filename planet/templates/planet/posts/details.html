@@ -4,6 +4,7 @@
         {{ post.title|striptags|safe }}
     </a>
 </h3>
+<!--
 <p>
     {% trans 'published in' %} <a href="{{ post.feed.get_absolute_url }}" title="{% trans 'See all posts for this feed' %}">
         {{ post.feed.title }}
@@ -15,9 +16,12 @@
         <a href="{% url planet_tag_detail tag.name %}" title="Tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
     {% endfor %}
 </p>
+-->
 <p class="content">
     {{ post.content|safe|striptags|truncatewords:"100" }} <a href="{% url planet_post_detail post.pk %}" title="{% trans 'Read more' %}">{% trans 'Read more' %}</a>
 </p>
+<!--
 <div class="external_links">
     <a href="{{ post.url }}" title="{% trans 'Read original post' %}">{% trans 'read original post' %}</a> {% trans 'in' %} <strong>{{ post.feed.title }}</strong>  {% trans 'blog' %}.
 </div>
+-->

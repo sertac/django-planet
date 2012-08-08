@@ -11,18 +11,9 @@
 {% endblock %}
 
 {% block menu %}
-Hello {{user}}
 {% endblock %}
 
 {% block search %}
-
-<form action="." method="post">
-{{form.as_p}}
-{% csrf_token %}
-<input type="submit" value="Filter">
-</form>
-
-
 {% endblock %}
 
 {% block right_column %}

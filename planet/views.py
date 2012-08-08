@@ -24,8 +24,10 @@ def index(request):
     except ObjectDoesNotExist:
         user_feeds=[]
 
-    if request.method == 'POST':
-        form=DateFilterForm(request.user,request.POST)
+    posts=Post.objects.filter(feed__id__in=user_feeds).order_by("-date_modified")
+    
+    if request.method == 'GET':
+        form=DateFilterForm(request.user,request.GET)
         if form.is_valid():
             start_date = form.cleaned_data["start_date"]
             end_date = form.cleaned_data["end_date"]
@@ -33,7 +35,6 @@ def index(request):
             posts = Post.site_objects.filter(feed__in=selected_feeds,date_modified__gte=start_date,date_modified__lte=end_date).order_by("-date_modified")
     else:
         form=DateFilterForm(request.user)
-        posts=Post.objects.filter(feed__id__in=user_feeds).order_by("-date_modified")
 
     return render_to_response("planet/posts/list.html", {"posts": posts, "form": form},
                 context_instance=RequestContext(request))

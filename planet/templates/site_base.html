@@ -1,74 +1,140 @@
-{% load i18n tagging_tags planet_tags %}
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<!doctype>
 <html>
+
 <head>
-    <title>{% block page_title %}{{ site.name }}{% endblock %}</title>
-    {% block extrameta %}
-    <meta name="DC.title" content="{{ site.name }}" />
-    {% endblock %}
-    <meta http-equiv="content-language" content="en" />
-    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8">
-    <link href="{{ MEDIA_URL }}icons/shortcut.ico" rel="SHORTCUT ICON">
-    <link rel="meta" type="application/rdf+xml" title="FOAF" href="{% url planet_foaf %}" /> 
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/base.css" />
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/960.css" />
-    {% block head_feeds %}
-    {% endblock %}
-    {% block extrastyle %}{% endblock %}
-    {% block extrahead %}{% endblock %}
-    <script src="{{ MEDIA_URL }}js/jquery.min.js" language="javascript"></script>
+    <title>Login</title>
+    <link href="{{ MEDIA_URL }}/css/reset.css" media="all" rel="stylesheet" />
+    <link href="{{ MEDIA_URL }}/css/960_12_col.css" media="all" rel="stylesheet" />
+    <link href="{{ MEDIA_URL }}/css/jquery-ui.css" media="all" rel="stylesheet" />
+    <link href="{{ MEDIA_URL }}/css/styles.css" media="all" rel="stylesheet" />
+    <link href="{{ MEDIA_URL }}/css/text.css" media="all" rel="stylesheet" />
+    <link href="{{ MEDIA_URL }}/css/jquery.fancybox.css" media="all" rel="stylesheet" />
+
+    <link href="{{ MEDIA_URL }}/css/print.css" media="print" rel="stylesheet" />
+
+    <!--[if IE]>
+        <link href="{{ MEDIA_URL }}/css/ie.css" media="all" rel="stylesheet" />
+    <![endif]-->
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery/jquery-ui-1.8.21.custom.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery/jquery.multi-accordion-1.5.3.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery/jquery.tinysort.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/classes/globals.js"></script>
+    
+    <!-- Profpy -->
+     <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.22/themes/base/jquery-ui.css" type="text/css" media="all">
+    <script src="{{ MEDIA_URL }}js/jquery.ui.core.js" language="javascript"></script>
+    <script src="{{ MEDIA_URL }}js/jquery.ui.widget.js" language="javascript"></script>
+    <script src="{{ MEDIA_URL }}js/jquery.ui.datepicker.js" language="javascript"></script>
+    
+
+
+    <!-- Google Font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,800,400,700' rel='stylesheet' type='text/css'>
+    
+
+    <script type="text/javascript" src="{{ MEDIA_URL }}/selectable/js/jquery.dj.selectable.js"></script> 
+    <link href="{{ MEDIA_URL }}/selectable/css/dj.selectable.css" type="text/css" media="all" rel="stylesheet" /> 
+    
+    
+    <!-- Profpy -->
+    	 <script> 
+	
+	$(function() {
+		$( "#id_start_date" ).datepicker({
+			onSelect: function( selectedDate ) {
+				$( "#id_end_date" ).datepicker( "option", "minDate", selectedDate );
+			}
+		});
+		$( "#id_end_date" ).datepicker({
+			onSelect: function( selectedDate ) {
+				$( "#id_start_date" ).datepicker( "option", "maxDate", selectedDate );
+			}
+		});
+	});
+	</script>    
+    
     <script language="javascript">
         function externalLinks(base_url) {
             return $('a[href^=http]:not("[href^=' + base_url + ']"):not(":has(\'img\')")');
         }
         $(document).ready(function() { externalLinks('{{ site.domain }}').addClass("external"); });
+        
+        
     </script>
+    
+    <style>
+    body{
+		font-family: 'Open Sans', sans-serif;
+    	font-size:12px;
+    }
+    .post {
+    	
+    	padding:5px;
+		border-bottom: #33493C 5px solid;
+		padding-bottom: 20px;
+	}
+	.post h3{
+		font-size:13px;
+	}
+	.date {
+		float:right;
+		font-size:11px;
+	}
+	.odd{
+		background-color:#ccc;
+	}
+	.even{
+		background-color:#eee;
+	}
+	.main_list{
+		height:500px;
+		position:relative;
+		overflow:auto;
+	}
+	.ui-datepicker{
+	font-size:10px;
+	}
+    </style>
+
 </head>
+
 <body>
-    <div id="body-container" class="clearfix">
-        <div id="header">
-            <div class="logo">
-                <h1>
-                    <a href="{% url planet_index %}" title="{{ site.name }}">{{ site.name }}</a>
-                </h1>
-            </div>
-            <div id="nav">
-                {% block search %}
-                {% endblock %}
-            </div>
+
+    <div id="main" class="container_12">
+        <div class="grid_12">            
+            
+        	
+		
+            <div id="content" class="grid_8 alpha ">
+				{% block content %}
+	            {% endblock %}
+        	</div>
+        	
+            <div id="header" class="grid_4  omega">
+	             {% block right_column %}
+	             {% endblock %}
+            
+            {% block menu %}
+            {% endblock %}
         </div>
-        <div class="container_12">
-            <div class="grid_9">
-                <div class="content">
-                {% block content %}
-                    <!-- Your content goes here -->
-                {% endblock %}
-                </div>
+            
+
+            <div class="clear"></div>
+        
+            <div id="footer" class="grid_12 alpha omega">
+                
+                
             </div>
-
-            <div id="right-rail" class="grid_3">
-                <div id="navigation_bar">
-                    {% if user.is_staff %}
-                    <ul>
-                        <li>
-                            <a href="{% url admin:index %}">{% trans 'admin site' %}</a>
-                        </li>
-                    </ul>
-                    {% endif %}
-                    {% block menu %}
-                    {% endblock %}
-                </div>
-
-                {% block right_column %}
-                {% endblock %}
-
-            </div>
+            
+            <div class="clear"></div>
         </div>
-        <div id="footer">
-        </div>
-
     </div>
+    <div id="ajax-links-dialog"></div>
 </body>
 
 </html>
