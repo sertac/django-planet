@@ -31,3 +31,5 @@ class DateFilterForm(forms.Form):
         super(DateFilterForm, self).__init__(*args, **kwargs)
         choices=UserFeed.objects.get(user=user).feeds.values_list('id','title')
         self.fields["feeds"].choices = choices
+        self.fields['start_date'].input_formats = ['%m/%d/%Y']
+        self.fields['end_date'].input_formats = ['%m/%d/%Y']
